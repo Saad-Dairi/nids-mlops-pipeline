@@ -1,0 +1,8 @@
+.venv/
+data/
+notebooks/
+__pycache__/
+.git/
+.pytest_cache/
+*.pkl
+!models/label_encoder.pkl

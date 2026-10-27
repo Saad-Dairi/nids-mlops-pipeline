@@ -1,0 +1,40 @@
+name: NIDS MLOps CI Pipeline
+
+# Déclencher le pipeline à chaque push ou Pull Request sur master ou main
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. Récupérer le code du dépôt GitHub
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # 2. Installer Python 3.12 sur le serveur GitHub
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+        cache: 'pip'
+
+    # 3. Installer les dépendances
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    # 4. Exécuter la suite de tests automatisés Pytest
+    - name: Run Unit Tests with Pytest
+      run: |
+        python -m pytest -v
+
+    # 5. Vérifier que l'image Docker se construit sans erreur
+    - name: Build Docker Image
+      run: |
+        docker build -t nids-api:ci-test .
