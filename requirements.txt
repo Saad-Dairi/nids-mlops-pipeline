@@ -8,3 +8,5 @@ uvicorn
 pydantic
 pytest
 httpx
+prometheus-fastapi-instrumentator<8.0.0
+prometheus-client
